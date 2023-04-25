@@ -1,7 +1,7 @@
 resource "aws_eks_cluster" "Hogwarts" {
 
   name                      = var.cluster_name
-  role_arn                  = aws_iam_role.Hogwarts_IAM_Role.name
+  role_arn                  = aws_iam_role.Hogwarts
   version                   = var.cluster_version
 
   vpc_config {
