@@ -8,14 +8,7 @@ resource "aws_eks_cluster" "Hogwarts" {
     security_group_ids      = var.vpc_security_group_id
     subnet_ids              = var.subnet_ids
     cluster_endpoint_public_access = true
-
-  cluster_addons = {
-    ebs-csi-driver = {
-      most_recent = true
-    }
-    vpc-cni = {
-      most_recent = true
-    }
+  }
   
   depends_on = [
     aws_iam_role_policy_attachment.Hogwarts-AmazonEKSClusterPolicy, aws_iam_role_policy_attachment.Hogwarts-AmazonEKSVPCResourceController, 
@@ -26,6 +19,17 @@ resource "aws_eks_cluster" "Hogwarts" {
   ]
 
   }
+}
+
+
+resource "aws_eks_addon" "VPC" {
+  cluster_name = aws_eks_cluster.Hogwarts.name
+  addon_name   = "vpc-cni"
+}
+
+resource "aws_eks_addon" "EBS" {
+  cluster_name = aws_eks_cluster.Hogwarts.name
+  addon_name   = "aws-ebs-csi-driver"
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -48,51 +52,51 @@ resource "aws_iam_role" "Hogwarts" {
 
 resource "aws_iam_role_policy_attachment" "Hogwarts-AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.Hogwarts_IAM_Role.name
+  role       = aws_iam_role.Hogwarts.name
 }
 
 resource "aws_iam_role_policy_attachment" "Hogwarts-AmazonEKSVPCResourceController" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
-  role       = aws_iam_role.Hogwarts_IAM_Role.name
+  role       = aws_iam_role.Hogwarts.name
 }
 
 resource "aws_iam_role_policy_attachment" "Hogwarts-AmazonEKS_VPC_CNI" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role       = aws_iam_role.Hogwarts_IAM_Role.name
+  role       = aws_iam_role.Hogwarts.name
 }
 
 resource "aws_iam_role_policy_attachment" "Hogwarts-AmazonEKS_EBS_CSI_DRIVER" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-  role       = aws_iam_role.Hogwarts_IAM_Role.name
+  role       = aws_iam_role.Hogwarts.name
 }
 
 resource "aws_iam_role_policy_attachment" "Hogwarts-AmazonEKS_SERVICE_POLICY" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
-  role       = aws_iam_role.Hogwarts_IAM_Role.name
+  role       = aws_iam_role.Hogwarts.name
 }
 
 resource "aws_iam_role_policy_attachment" "Hogwarts-AmazonEKS_WORKERNODE_POLICY" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-  role       = aws_iam_role.Hogwarts_IAM_Role.name
+  role       = aws_iam_role.Hogwarts.name
 }
 
 resource "aws_iam_role_policy_attachment" "Hogwarts-AmazonEKS_SECRET_MANAGER" {
   policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
-  role       = aws_iam_role.Hogwarts_IAM_Role.name
+  role       = aws_iam_role.Hogwarts.name
 }
 
 resource "aws_iam_role_policy_attachment" "Hogwarts-AmazonEKS_EC2_FULLACCESS" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
-  role       = aws_iam_role.Hogwarts_IAM_Role.name
+  role       = aws_iam_role.Hogwarts.name
 }
 
 resource "aws_iam_role_policy_attachment" "Hogwarts-AmazonEKS_HEALTH_FULLACCESS" {
   policy_arn = "arn:aws:iam::aws:policy/AWSHealthFullAccess"
-  role       = aws_iam_role.Hogwarts_IAM_Role.name
+  role       = aws_iam_role.Hogwarts.name
 }
 
 resource "aws_iam_role_policy_attachment" "Hogwarts-AmazonEKS_FARGATE" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSFargatePodExecutionRolePolicy"
-  role       = aws_iam_role.Hogwarts_IAM_Role.name
+  role       = aws_iam_role.Hogwarts.name
 }
 }
