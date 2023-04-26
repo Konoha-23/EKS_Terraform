@@ -20,7 +20,7 @@
     #      certManager: true
 
 
-resource "aws_eks_node_group" "hogwarts_node" {
+resource "aws_eks_node_group" "worker" {
   cluster_name = aws_eks_cluster.Hogwarts.name
   node_group_name = var.node_group_name
   node_role_arn = "aws_iam_role.hogwarts_role"
