@@ -27,9 +27,13 @@ resource "aws_eks_addon" "VPC" {
   addon_name   = "vpc-cni"
 }
 
-resource "aws_eks_addon" "EBS" {
+resource "aws_eks_addon" "EBS_CSI_DRIVER" {
   cluster_name = aws_eks_cluster.Hogwarts.name
-  addon_name   = "aws-ebs-csi-driver"
+  addon_name = "aws-ebs-csi-driver"
+  tags = {
+    "eks_addon" = "ebs-csi"
+    "terraform" = "true"
+  }
 }
 
 data "aws_iam_policy_document" "assume_role" {
