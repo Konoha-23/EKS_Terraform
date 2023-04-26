@@ -29,3 +29,9 @@ variable "subnet_ids" {
     type = list(string)
     default = ["subnet-01c8aa22c96ffe76b", "subnet-0ea37024c6b112d17"]
 }
+
+variable "node_group_name" {
+    description = "Node Group Name"
+    type = string
+    default = "worker"
+}
