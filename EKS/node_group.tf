@@ -23,7 +23,7 @@
 resource "aws_eks_node_group" "worker" {
   cluster_name = aws_eks_cluster.Hogwarts.name
   node_group_name = var.node_group_name
-  node_role_arn = "aws_iam_role.hogwarts_role"
+  node_role_arn = "aws_iam_role.hogwarts_role_1"
   subnet_ids = var.subnet_ids 
 
   scaling_config {
@@ -35,18 +35,19 @@ resource "aws_eks_node_group" "worker" {
   update_config {
     max_unavailable = 1
   }
- 
- disk_size = 20
- 
- remote_access {
+
+  disk_size = 20
+
+  remote_access {
     ec2_ssh_key = "EKS"
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.hogwarts_image_Builder, aws_iam_role_policy_attachment.hogwarts_auto_scaler,
+    aws_iam_role_policy_attachment.hogwarts_ECR, aws_iam_role_policy_attachment.hogwarts_auto_scaler,
     aws_iam_role_policy_attachment.hogwarts_cloudwatch, aws_iam_role_policy_attachment.hogwarts_ebs, 
     aws_iam_role_policy_attachment.hogwarts_lodbalancer, aws_iam_role_policy_attachment.hogwarts_app_mesh, 
-    aws_iam_role_policy_attachment.hogwarts_external_dns, aws_iam_role_policy_attachment.hogwarts_cert_manager 
+    aws_iam_role_policy_attachment.hogwarts_external_dns, aws_iam_role_policy_attachment.hogwarts_cert_manager,
+    aws_iam_role_policy_attachment.hogwarts_WORKERNODE_POLICY, aws_iam_role_policy_attachment.hogwarts_VPC_CNI
   ]
 }
 
@@ -69,9 +70,24 @@ resource "aws_iam_role" "hogwarts_role_1" {
     assume_role_policy = data.aws_iam_policy_document.assume_role_1.json
 }
 
+resource "aws_iam_role_policy_attachment" "hogwarts_WORKERNODE_POLICY" { #required
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.hogwarts_role_1.name
+}
+
+resource "aws_iam_role_policy_attachment" "hogwarts_VPC_CNI" { #required
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+  role       = aws_iam_role.hogwarts_role_1.name
+}
+
+resource "aws_iam_role_policy_attachment" "hogwarts_ECR" { #required
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = aws_iam_role.hogwarts_role_1.name
+}
+
 resource "aws_iam_role_policy_attachment" "hogwarts_auto_scaler" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetAutoscaleRole"
-  role = aws_iam_role.hogwarts_role_1.name
+    policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetAutoscaleRole"  
+    role = aws_iam_role.hogwarts_role_1.name
 }
 
 resource "aws_iam_role_policy_attachment" "hogwarts_cloudwatch" {
