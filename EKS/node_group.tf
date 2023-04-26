@@ -1,11 +1,24 @@
-#imageBuilder: true #arn:aws:iam::aws:policy/AWSImageBuilderFullAccess
-#          autoscaler: true #arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetAutoscaleRole
- #         cloudWatch: true #arn:aws:iam::aws:policy/CloudWatchFullAccess
-  #        ebs: true #arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
-   #       awsLoadBalancerController: true #arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess
-    #      appMesh: true #arn:aws:iam::aws:policy/AWSAppMeshFullAccess
-     #     externalDNS: true #arn:aws:iam::aws:policy/AmazonRoute53FullAccess
-      #    certManager: true #arn:aws:iam::aws:policy/AWSCertificateManagerFullAccess
+#managedNodeGroups:
+ # - name: Public-Worker
+  #  instanceType: t3.medium
+   # desiredCapacity: 2
+    #minSize: 2
+    #maxSize: 4
+    #volumeSize: 20
+    #ssh:
+    #  publicKeyName: EKSKEY
+    #iam:
+    #  withAddonPolicies:
+    #      imageBuilder: true
+    #      autoscaler: true
+    #      cloudWatch: true
+    #      ebs: true
+    #      awsLoadBalancerController: true
+    #      appMesh: true
+    #      appMeshPreview: true
+    #      externalDNS: true
+    #      certManager: true
+
 
 resource "aws_eks_node_group" "hogwarts" {
   cluster_name = aws_eks_cluster.Hogwarts.name
@@ -21,6 +34,12 @@ resource "aws_eks_node_group" "hogwarts" {
 
   update_config {
     max_unavailable = 1
+  }
+ 
+ disk_size = 20
+ 
+ remote_access {
+    ec2_ssh_key = "EKS"
   }
 
   depends_on = [
