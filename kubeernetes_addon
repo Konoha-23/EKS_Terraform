@@ -1,0 +1,10 @@
+module "eks_blueprints_kubernetes_addons" {
+  source = "github.com/aws-ia/terraform-aws-eks-blueprints//modules/kubernetes-addons"
+
+  eks_cluster_id = module.eks.cluster_name
+
+
+  #K8s Add-ons
+  enable_metrics_server                = true
+  enable_ingress_nginx                 = true
+}
