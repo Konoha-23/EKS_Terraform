@@ -7,4 +7,9 @@ module "eks_blueprints_kubernetes_addons" {
   #K8s Add-ons
   enable_metrics_server                = true
   enable_ingress_nginx                 = true
+  enable_prometheus                    = true
+  enable_grafana                       = true
 }
+
+#subnet_ids = [module.vpc.private_subnets, module.vpc.public_subnets]
+#subnet_ids = module.vpc.private_subnets
