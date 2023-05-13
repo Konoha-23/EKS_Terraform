@@ -1,3 +1,5 @@
+#Important Security Group Requirements: https://docs.aws.amazon.com/eks/latest/userguide/sec-group-reqs.html
+
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.13.1"
