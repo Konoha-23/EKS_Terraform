@@ -5,6 +5,14 @@ List of Security Groups implemented as Terraform modules: https://github.com/ter
 
 Security group with predefined rules
 
+module "ssh_security_group" {
+  source  = "terraform-aws-modules/security-group/aws//modules/ssh"
+  version = "~> 4.0"
+
+  name = "http-sg"
+  vpc_id = ""
+}
+
 module "http_80_security_group" {
   source  = "terraform-aws-modules/security-group/aws//modules/http-80"
   version = "~> 4.0"
