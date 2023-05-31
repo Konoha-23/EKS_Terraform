@@ -21,7 +21,7 @@ module "ssh_security_group" {
   source  = "terraform-aws-modules/security-group/aws//modules/ssh"
   version = "~> 4.0"
 
-  name = "http-sg"
+  name = "ssh-sg"
   vpc_id = module.vpc.vpc_id
   ingress_cidr_blocks = ["10.0.3.0/24"] #Use the cidr block of the subnet the security group will be deployed in.
   ingress_rules = ["ssh-tcp"]
@@ -94,8 +94,6 @@ module "prometheus_security_group" {
   ingress_rules = ["prometheus-http-tcp"]
 }
   
-
-  
 Security group with custom rules 
   
 module "security-group" {
@@ -106,79 +104,8 @@ module "security-group" {
   vpc_id = "module.vpc.vpc_id"
   ingress_cidr_blocks = ["10.0.3.0/24"] #This should be the cidr block for the public/private subnets within your VPC that you're setting up the security group within.
   
-  rules = {
-  "all-all": [
-    -1,
-    -1,
-    "-1",
-    "All protocols"
-  ],  
-  "http-80-tcp": [
-       80,
-       80,
-       "tcp",
-       "HTTP"
-  ],
-  "http-8080-tcp": [
-     8080,
-     8080,
-     "tcp",
-     "HTTP"
-  ],
-  "https-443-tcp": [
-     443,
-     443,
-     "tcp",
-     "HTTPS"
-  ],
-  "kibana-tcp": [
-     5601,
-     5601,
-     "tcp",
-     "Kibana Web Interface"
-  ],
-  "elasticsearch-java-tcp": [
-     9300,
-     9300,
-     "tcp",
-     "Elasticsearch Java interface"
-   ],
-  "mongodb-27017-tcp": [
-     27017,
-     27017,
-     "tcp",
-     "MongoDB"
-  ],
-  "kubernetes-api-tcp": [
-     6443,
-     6443,
-     "tcp",
-     "Kubernetes API Server"
-  ],
-  "mysql-tcp": [
-     3306,
-     3306,
-     "tcp",
-     "MySQL/Aurora"
-  ],
-  "prometheus-http-tcp": [
-     9090,
-     9090,
-     "tcp",
-     "Prometheus"
-  ],
-  "prometheus-node-exporter-http-tcp": [
-     9100,
-     9100,
-     "tcp",
-     "Prometheus Node Exporter"
-  ],
-  "prometheus-pushgateway-http-tcp": [
-     9091,
-     9091,
-     "tcp",
-     "Prometheus Pushgateway"
-  ],
-    
- }
+  ingress_rules = ["all-all", "ssh-tcp", "http-80-tcp", "http-8080-tcp", "https-443-tcp", "kibana-tcp", "elasticsearch-java-tcp", 
+                   "mongodb-27017-tcp", "kubernetes-api-tcp", "mysql-tcp", "prometheus-http-tcp", "prometheus-node-exporter-http-tcp", 
+                   "prometheus-pushgateway-http-tcp"
+                  ]
 }
