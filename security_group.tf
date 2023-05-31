@@ -101,11 +101,35 @@ module "security-group" {
   version = "4.17.2"
 
   name = "All-sg"
-  vpc_id = "module.vpc.vpc_id"
+  vpc_id = module.vpc.vpc_id
   ingress_cidr_blocks = ["10.0.3.0/24"] #This should be the cidr block for the public/private subnets within your VPC that you're setting up the security group within.
   
   ingress_rules = ["all-all", "ssh-tcp", "http-80-tcp", "http-8080-tcp", "https-443-tcp", "kibana-tcp", "elasticsearch-java-tcp", 
                    "mongodb-27017-tcp", "kubernetes-api-tcp", "mysql-tcp", "prometheus-http-tcp", "prometheus-node-exporter-http-tcp", 
                    "prometheus-pushgateway-http-tcp"
                   ]
+}
+  
+Security Group with custom rules
+
+module "vote_service_sg" {
+  source = "terraform-aws-modules/security-group/aws"
+
+  name        = "user-service"
+  description = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
+  vpc_id      = module.vpc.vpc_id
+  
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 9000 #port for sonarqube
+      to_port     = 9000
+      protocol    = "tcp"
+      description = "User-service ports"
+      cidr_blocks = "10.0.3.0/24"
+    },
+    {
+      rule        = "postgresql-tcp"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
 }
