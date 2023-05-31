@@ -13,7 +13,7 @@ module "http_80_security_group" {
   vpc_id = module.vpc.vpc_id
   ingress_cidr_blocks = ["10.0.3.0/24"] #Use the cidr block of the subnet the security group will be deployed in.
   ingress_rules = ["http-80-tcp"]
-  computed_ingress_rules           = ["ssh-tcp", "https-443-tcp"] #Use this line to add more security group rules to the default http 80 rule.
+  computed_ingress_rules           = ["ssh-tcp", "https-443-tcp", "http-8080-tcp"] #Use this line to add more security group rules to the default http 80 rule.
   number_of_computed_ingress_rules = 2
 }
   
@@ -43,7 +43,7 @@ module "http_8080_security_group" {
 
   vpc_id = module.vpc.vpc_id
   ingress_cidr_blocks = ["10.0.3.0/24"] #Use the cidr block of the subnet the security group will be deployed in.
-  ingress_rules = ["http-8080-tcp"]
+  ingress_rules = ["http-8080-tcp"] #port for tomcat
 }
 module "mysql_security_group" {
   source  = "terraform-aws-modules/security-group/aws//modules/mysql"
