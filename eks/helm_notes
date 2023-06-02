@@ -1,0 +1,423 @@
+Helm and helm charts  
+====================
+helm in a package manager for kubernetes    
+We can deploy workloads in Kubernetes easily using helm  
+
+YUM / choco / brew / apt / python-pipe  
+
+maven 
+1.  yum install maven  
+2. 
+  wget maven.zip  
+  unzip maven.zip
+  chmod 777 maven    
+  sh /opt/maven/bin/mvn package  
+
+Deployment mongodb:
+  secret  
+  configmap  
+  PersistentVolume
+  persistentVolumeClaim 
+  HPA  
+  SERVICE 
+
+helm create javawebapp    
+
+Install Helm 3
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+chmod 700 get_helm.sh
+ ./get_helm.sh  
+
+helm show values javawebapp  
+helm template javawebapp
+
+GitHub = SCM  
+
+create custom helm charts for application deployment  
+push helm charts into helm repositories  in GitHub pages, helm.io, etc.
+Update existing helm charts into helm repositories 
+Use helm helm charts for easy deployment within the team  
+
+GitHub REPO:
+  https://github.com/LandmakTechnology/helm-app23  
+
+GitHub pages:
+  https://landmaktechnology.github.io/helm-app23/
+
+kubectl get all
+   51  clear
+   52  ls
+   53  vi app.yml
+   54  kubectl get node
+   55  exit
+   56  clear
+   57  helm ls
+   58  helm uninstall app29
+   59  helm repo ls
+   60  helm repo add myapp  https://landmaktechnology.github.io/helm-app23/
+   61  helm uppdate  repo
+   62  helm  repo update
+   63  clear
+   64  helm  repo ls
+   65  helm search repo  myapp
+   66  helm show values myapp/myapp
+   67  helm template myapp/myapp
+   68  helm show values myapp/myapp
+   69  helm show values myapp/myapp  > values.yml
+   70  vi values.yml
+   71  helm install myapp  myapp/myapp -f values.yml
+
+Deploying 3rd party applications using Helm   
+Install Nginx ingress using helm:  
+===============================
+ https://helm.nginx.com/stable
+ helm repo add nginx-ingress https://helm.nginx.com/stable 
+ helm repo update
+ helm search repo nginx-ingress     
+ helm install  nginx    nginx-ingress/nginx-ingress -n nginx  
+
+app.yml = 4 applications
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: myapp
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  replicas: 2
+  template:
+    metadata:
+      name: myapp
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: myapp
+        image: mylandmarktech/maven-web-app
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /maven-web-app
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: appsvc
+spec:
+  selector:
+     app: myapp
+  ports:
+  - targetPort: 8080
+    port: 80
+---
+# Complete Manifest Where in single yml we defined Deployment & Service for SpringApp & PVC(with default  StorageClass),ReplicaSet & Service For Mongo.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springappdeployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: springapp
+  template:
+    metadata:
+      name: springapppod
+      labels:
+        app: springapp
+    spec:
+      containers:
+      - name: springappcontainer
+        image: mylandmarktech/spring-boot-mongo
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MONGO_DB_USERNAME
+          value: devdb
+        - name: MONGO_DB_PASSWORD
+          value: devdb@123
+        - name: MONGO_DB_HOSTNAME
+          value: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springapp
+spec:
+  selector:
+    app: springapp
+  ports:
+  - port: 80
+    targetPort: 8080
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodbpvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 16Gi
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: mongodbrs
+spec:
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+     metadata:
+       name: mongodbpod
+       labels:
+         app: mongodb
+     spec:
+       volumes:
+       - name: pvc
+         persistentVolumeClaim:
+           claimName: mongodbpvc
+       containers:
+       - name: mongodbcontainer
+         image: mongo
+         ports:
+         - containerPort: 27017
+         env:
+         - name: MONGO_INITDB_ROOT_USERNAME
+           value: devdb
+         - name: MONGO_INITDB_ROOT_PASSWORD
+           value: devdb@123
+         volumeMounts:
+         - name: pvc
+           mountPath: /data/db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo
+spec:
+  type: ClusterIP
+  selector:
+    app: mongodb
+  ports:
+  - port: 27017
+    targetPort: 27017
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: javasvc
+spec:
+  type: ClusterIP
+  selector:
+    app: java
+  ports:
+  - port: 80
+    targetPort: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: javaapp
+  labels:
+    app: java
+spec:
+  containers:
+  - name: javaapp
+    image: mylandmarktech/java-web-app
+    ports:
+    - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appsvc
+spec:
+  type: ClusterIP
+  selector:
+    app: fe
+  ports:
+  - port: 80
+    targetPort: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: javaapp22
+  labels:
+    app: fe
+spec:
+  containers:
+  - name: javaapp
+    image: mylandmarktech/maven-web-app
+    ports:
+    - containerPort: 8080
+
+ubuntu@ip-172-20-57-176:~$ kubectl apply -f app
+deployment.apps/springappdeployment created
+service/springapp created
+persistentvolumeclaim/mongodbpvc unchanged
+replicaset.apps/mongodbrs created
+service/mongo created
+service/javasvc created
+pod/javaapp created
+service/appsvc created
+pod/javaapp22 created
+deployment.apps/myapp created
+
+Path-based routing:
+ ideal for microservices
+    dominionapps.net/
+    dominionapps.net/login 
+    dominionapps.net/registration
+    dominionapps.net/account
+    dominionapps.net/transfer
+    dominionapps.net/payBills
+
+Host-based routing:
+  host: dominionapps.net/
+  backend:
+    service: springapp  
+  host: app.dominionapps.net/
+  backend:
+    service: myapp  
+
+
+vi ingress.sh 
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: springapp.dominionapps.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: springapp
+            port:
+              number: 80
+  - host: app.dominionapps.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: /maven-web-app
+        backend:
+          service:
+            name: appsvc
+            port:
+              number: 80
+  - host: java.dominionapps.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: /java-web-app
+        backend:
+          service:
+            name: javasvc
+            port:
+
+what happens when we type:  
+  java.dominionapps.net 
+  google.com 
+
+This qwery the global DNS 
+    java.dominionapps.net ---- 
+
+nslookup springapp.dominionapps.net
+
+Non-authoritative answer:
+Name:   springapp.dominionapps.net
+Address: 52.8.189.97
+Name:   springapp.dominionapps.net
+Address: 54.153.19.238
+
+
+https://github.com/LandmakTechnology/kubernetes-notes/tree/master/13-kubernetes-ingress
+
+Rancher  
+Helm  
+Nginx-ingress  
+custom application  
+
+kubernetes security  
+
+2 =336 
+x = 400
+
+
+1 = 336/2  = 
+
+67,000 hours  
+
+  5 year  +  
+
+
+  How can we achieve the transition to microservices??
+   Change request 
+      Monolithic  to microservices   
+   train other colleague 
+---
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-path
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: dominionapps.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: springapp
+            port:
+              number: 80
+      - path: /maven-web-app
+        pathType: Prefix
+        backend:
+          service:
+            name: appsvc
+            port:
+              number: 80
+      - path: /java-web-app
+        pathType: Prefix
+        backend:
+          service:
+            name: javasvc
+            port:
+              number: 80
+
+dominionapps.net:
+google.com
+ what happens
+---
+    ingressLB    svc --- pods
+
+dominionapps.net --- 
+
+  nslookup  dominionapps.net
+
+ [applications]  
+
+    browser cache 
+    ram cache   
+    ISP  - MTN / Rogers / Comcat
