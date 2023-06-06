@@ -43,7 +43,7 @@ module "http_8080_security_group" {
 
   vpc_id = module.vpc.vpc_id
   ingress_cidr_blocks = ["10.0.3.0/24"] #Use the cidr block of the subnet the security group will be deployed in.
-  ingress_rules = ["http-8080-tcp"] #port for tomcat
+  ingress_rules = ["http-8080-tcp"] #port for tomcat and jenkins
 }
 module "mysql_security_group" {
   source  = "terraform-aws-modules/security-group/aws//modules/mysql"
@@ -111,6 +111,42 @@ module "security-group" {
 }
   
 Security Group with custom rules
+
+  module "Sonar" {
+  source = "terraform-aws-modules/security-group/aws"
+
+  name        = "Sonar"
+  description = "Security group for user-service with custom ports open within VPC"
+  vpc_id      = module.vpc.vpc_id
+  
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 9000 #port for sonarqube
+      to_port     = 9000
+      protocol    = "tcp"
+      description = "SonarQube Port"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
+}
+
+module "Nexus" {
+  source = "terraform-aws-modules/security-group/aws"
+
+  name        = "Nexus"
+  description = "Security group for Nexus ports open within VPC"
+  vpc_id      = module.vpc.vpc_id
+  
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 8081 #port for sonarqube
+      to_port     = 8081
+      protocol    = "tcp"
+      description = "Nexus Port"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
+}
 
 module "vote_service_sg" {
   source = "terraform-aws-modules/security-group/aws"
