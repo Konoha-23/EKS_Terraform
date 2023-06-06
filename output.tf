@@ -19,20 +19,56 @@ output "private_subnet_ids" {
 
 #Security Group Output 
     
-output "vpc_security_group_id" {
-    description = "Private Subnet IDs for Practice VPC"
-    value = module.security-group.security_group_id
-}
-    
-#Instance Outputs
-    
-output "Practice_Public_Instance_ID" {
-    description = "ID for Practice_Public Instance"
-    value = aws_instance.Practice_Public.id
+output "default_security_group_id" {
+    description = "Default Security Group ID"
+    value = module.Default.security_group_id
 }
 
-output "Practice_Private_Instance_ID" {
-    description = "ID for Practice_Private Instance"
-    value = aws_instance.Practice_Private.id  
+output "Jenkins_security_group_id" {
+    description = "Jenkins Security Group ID"
+    value = module.Jenkins.security_group_id
 }
+
+output "sonar_security_group_id" {
+    description = "SonarQube Security Group ID"
+    value = module.Sonar.security_group_id
+}
+
+output "Nexus_security_group_id" {
+    description = "Nexus Security Group ID"
+    value = module.Nexus.security_group_id
+}
+
+#EIP
+output "Jenkins_EIP" {
+    description = "Jenkins_EIP"
+    value = aws_eip.Jenkins_EIP.public_ip
+}
+
+output "Docker_EIP" {
+    description = "Docker EIP"
+    value = aws_eip.Docker_EIP.public_ip
+}
+
+output "Sonar_EIP" {
+    description = "Sonar EIP"
+    value = aws_eip.Sonar_EIP.public_ip
+}
+
+output "Nexus_EIP" {
+    description = "Nexus EIP"
+    value = aws_eip.Nexus_EIP.public_ip
+}
+    
+#Practice Instance Outputs
+    
+#output "Practice_Public_Instance_ID" {
+ #   description = "ID for Practice_Public Instance"
+  #  value = aws_instance.Practice_Public.id
+#}
+
+#output "Practice_Private_Instance_ID" {
+ #   description = "ID for Practice_Private Instance"
+  #  value = aws_instance.Practice_Private.id  
+#}
 
