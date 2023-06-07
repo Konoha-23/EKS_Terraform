@@ -1,6 +1,8 @@
 #EKS VPC And Subnet Ref: https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
 #Ref for public and private tagging rules tied to alb controller: https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/deploy/subnet_discovery/
 #Important Security Group Requirements: https://docs.aws.amazon.com/eks/latest/userguide/sec-group-reqs.html
+#vpc - (Optional Deprecated) Boolean if the EIP is in a VPC or not. Use domain instead. Defaults to true unless the region supports EC2-Classic. Warning comes up 
+#when running this module as of 06/06/23 so need to make this change in the main.tf file. 
 
 Example 1 (EKS VPC):
 
