@@ -5,7 +5,10 @@ Custom modules for Terraform
  
  #awscli installation
  sudo apt update -y
- sudo apt install awscli -y
+ sudo apt install unzip
+ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+ unzip awscliv2.zip
+ sudo ./aws/install
  
  #terraform
  $sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
