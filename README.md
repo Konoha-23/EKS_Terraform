@@ -10,6 +10,12 @@ Custom modules for Terraform
  unzip awscliv2.zip
  sudo ./aws/install
  
+ #kubectl
+ sudo curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.25.9/2023-05-11/bin/darwin/amd64/kubectl
+ sudo chmod +x ./kubectl
+ sudo mv ./kubectl /usr/local/bin/kubectl
+ kubectl version --short
+ 
  #terraform
  $sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
  $curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
