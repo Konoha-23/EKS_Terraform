@@ -1,0 +1,14 @@
+Created on 06/10/23 and not practised yet
+ref: https://registry.terraform.io/modules/terraform-aws-modules/ecr/aws/1.6.0
+
+module "ecr" {
+  source = "terraform-aws-modules/ecr/aws"
+
+  repository_name = "private-example"
+  repository_type = "private"
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
