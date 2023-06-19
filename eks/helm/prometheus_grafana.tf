@@ -28,7 +28,45 @@ resource "helm_release" "elastic" {
 }
 
 ---
-
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apmingress
+  namespace: apm  
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: prometheus.dominionapps.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: prometheus-server
+            port:
+              number: 80
+  - host: alert.dominionapps.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: prometheus-alertmanager
+            port:
+              number: 80
+  - host: grafana.dominionapps.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: grafana
+            port:
+              number: 80
+---
 monitoring (micro-service) applications with  
 Prometheus and Grafana
 ======================================
