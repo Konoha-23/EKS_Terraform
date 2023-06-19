@@ -16,6 +16,60 @@ module "ebs_csi_irsa_role" {
   }
 }
 
+module "efs_csi_irsa_role" {
+  source = "../../modules/iam-role-for-service-accounts-eks"
+
+  role_name             = "efs-csi"
+  attach_efs_csi_policy = true
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:efs-csi-controller-sa"]
+    }
+  }
+
+  tags = {
+    name = "kubernetes.io/cluster/SSJ"
+  }
+}
+
+module "external_dns_irsa_role" {
+  source = "../../modules/iam-role-for-service-accounts-eks"
+
+  role_name                     = "external-dns"
+  attach_external_dns_policy    = true
+  external_dns_hosted_zone_arns = ["arn:aws:route53:::hostedzone/IClearlyMadeThisUp"]
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:external-dns"]
+    }
+  }
+
+  tags = {
+    name = "kubernetes.io/cluster/SSJ"
+  }
+}
+
+module "amazon_managed_service_prometheus_irsa_role" {
+  source = "../../modules/iam-role-for-service-accounts-eks"
+
+  role_name                                       = "amazon-managed-service-prometheus"
+  attach_amazon_managed_service_prometheus_policy = true
+
+  oidc_providers = {
+    ex = {
+      provider_arn               = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["prometheus:amp-ingest"]
+    }
+
+  tags = {
+    name = "kubernetes.io/cluster/SSJ"
+  }
+  }
+
 module "load_balancer_controller_irsa_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
