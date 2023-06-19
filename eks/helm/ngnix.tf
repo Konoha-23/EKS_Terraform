@@ -1,13 +1,11 @@
 #Ref: https://developer.hashicorp.com/terraform/tutorials/kubernetes/helm-provider
 ===
 resource "helm_release" "nginx" {
-  name       = "nginx"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "nginx"
-
-  values = [ #This is for customization if you want to pass edits to the default chart
-    file("${path.module}/nginx-values.yaml")
-  ]
+  name       = "nginx-ingress"
+  create_namespace = true
+  namespace  = "nginx"
+  repository = "https://helm.nginx.com/stable"
+  chart      = "nginx-ingress"
 }
 
 ---
@@ -21,10 +19,4 @@ Install Nginx ingress using helm:
  helm search repo nginx-ingress     
  helm install  nginx    nginx-ingress/nginx-ingress -n nginx
 
-resource "helm_release" "nginx" {
-  name       = "nginx"
-  repository = "https://helm.nginx.com/stable"
-  chart      = "nginx-ingress/nginx-ingress"
-  ]
-}
 
