@@ -21,3 +21,9 @@ Custom modules for Terraform
  $curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
  $sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
  $sudo apt-get update && sudo apt-get install terraform
+
+ #Helm Install
+ #curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+ #chmod 700 get_helm.sh
+ #./get_helm.sh
+
