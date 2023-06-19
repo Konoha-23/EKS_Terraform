@@ -19,6 +19,15 @@ resource "helm_release" "grafana" {
 }
 
 ---
+resource "helm_release" "elastic" {
+  name       = "elastic"
+  create_namespace = true
+  namespace  = "efk"
+  repository = "https://helm.elastic.co"
+  chart      = "elastic"
+}
+
+---
 
 monitoring (micro-service) applications with  
 Prometheus and Grafana
