@@ -1,3 +1,5 @@
+#Ref: https://developer.hashicorp.com/terraform/tutorials/kubernetes/helm-provider
+
 ---
 provider "helm" {
   kubernetes {
