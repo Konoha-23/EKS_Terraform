@@ -1,0 +1,21 @@
+#After Nginx Ingress Controller has been installed via Helm either during terraform apply or manually after cluster creation
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress-1
+  namespace: nginx
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: nginx.devopsnetwork.net
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: nginx-service
+            port: 
+              number: 80
