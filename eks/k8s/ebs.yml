@@ -1,0 +1,13 @@
+#Configuration for EBS storage class
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc
+  #namespace:
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer #The volumeBindingMode field controls when volume binding and dynamic provisioning should occur. When unset, "Immediate" mode is used by default. The Immediate mode indicates that volume binding and dynamic provisioning occurs once the PersistentVolumeClaim is created. A cluster administrator can address this issue by specifying the WaitForFirstConsumer mode which will delay the binding and provisioning of a PersistentVolume until a Pod using the PersistentVolumeClaim is created.
+#parameters:
+  #type: gp2
+#reclaimPolicy: #Retain, or Delete (Default if not policy is specified)
+#allowVolumeExpansion: true #PersistentVolumes can be configured to be expandable. This feature when set to true, allows the users to resize the volume by editing the corresponding PVC object.
