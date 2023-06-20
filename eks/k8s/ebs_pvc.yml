@@ -1,0 +1,15 @@
+#Setup For EBS PVC
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-mysql-pv-claim
+  #namespace:
+spec:
+  resources:
+    requests:
+      storage: 4Gi #Amount of storage being claimed for use by designated POD in deployment
+  storageClassName: ebs-sc #Name of created storage class
+  volumeMode: Filesystem #Default file system. Will create a file system layer in block storage
+  accessModes: #ReadWriteOnce - RWO(the volume can be mounted as read-write by a single node), ReadOnlyMany - ROX (the volume can be mounted as read-only by many nodes), ReadWriteMany - RWX(the volume can be mounted as read-write by many nodes).
+    - ReadWriteOnce
