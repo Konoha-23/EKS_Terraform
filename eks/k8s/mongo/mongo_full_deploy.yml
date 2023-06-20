@@ -12,7 +12,7 @@ metadata:
   name: mongo-secret
 type: Opaque
 data:
-  mongo_db_password: biBhZG1pbkAxMjMK
+  mongo_db_password: dbpassword23 #biBhZG1pbkAxMjMK
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: springapp-container
-        image: mylandmarktech/spring-boot-mongo
+        image: princebabs/springapp:latest
         ports:
         - containerPort: 8080
         env:
@@ -68,7 +68,6 @@ spec:
   ports:
   - port: 80
     targetPort: 8080
-    nodePort: 30500
 
 ---
 apiVersion: storage.k8s.io/v1
