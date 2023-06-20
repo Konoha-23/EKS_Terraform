@@ -1,0 +1,16 @@
+#ref: https://www.w3schools.com/html/html_colors.asp
+#ref: https://www.w3schools.com/colors/colors_names.asp
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-index-html-config
+  namespace: nginx
+data:
+  index.html: |
+    <html>
+    <h1 style="background-color:DodgerBlue; "color:Tomato;">Welcome to Arsenal Declan Rice</h1>
+    <p style="background-color:DarkGoldenRod; "color:MintCream;">The Only Premier League Club to Go Invincible</p>
+    <h3 style="background-color:Gold; "color:Navy;">With You, We Can Go The Distance</h3>
+    </html>
