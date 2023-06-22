@@ -16,6 +16,12 @@ module "http_80_security_group" {
   computed_ingress_rules           = ["ssh-tcp", "https-443-tcp", "http-8080-tcp"] #Use this line to add more security group rules to the default http 80 rule.
   number_of_computed_ingress_rules = 2
 }
+
+variable "auto_ingress_with_self" {
+  description = "List of maps defining ingress rules with self to add automatically"
+  type        = list(map(string))
+  default     = [{ "rule" = "all-all" }]
+}
   
 module "ssh_security_group" {
   source  = "terraform-aws-modules/security-group/aws//modules/ssh"
