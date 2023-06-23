@@ -3,6 +3,95 @@
 #Ref for public and private tagging rules tied to alb controller: https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/deploy/subnet_discovery/
 #Addons Version Ref: https://docs.aws.amazon.com/eks/latest/userguide/service-accounts.html#boundserviceaccounttoken-validated-add-on-versions
 
+--- 
+#06/22/23
+
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "19.13.1"
+
+  cluster_name = var.cluster_name
+  cluster_version = var.cluster_version
+  vpc_id = module.vpc.vpc_id
+  subnet_ids = module.vpc.public_subnets
+  cluster_endpoint_public_access = true
+  enable_irsa = var.irsa
+  cluster_addons = {
+    coredns = {
+      most_recent = var.coredns
+    }
+    kube-proxy = {
+      most_recent = var.kube_proxy
+    }
+    vpc-cni = {
+      most_recent = var.vpc_cni
+    }
+  }
+
+  cluster_security_group_additional_rules = {
+    # Test: https://github.com/terraform-aws-modules/terraform-aws-eks/pull/2319
+                                            ingress_source_security_group_id = {
+                                                  description              = "http-80"
+                                                  protocol                 = "tcp"
+                                                  from_port                = 80
+                                                  to_port                  = 80
+                                                  type                     = "ingress"
+                                                  source_security_group_id = module.Default_SG.security_group_id
+                                          }
+                                            ingress_source_security_group_id = {
+                                                 description              = "http-8080"
+                                                 protocol                 = "tcp"
+                                                 from_port                = 8080
+                                                 to_port                  = 8080
+                                                 type                     = "ingress"
+                                                 source_security_group_id = module.Default_SG.security_group_id
+                }
+                                            ingress_source_security_group_id = {
+                                                  description              = "https-443"
+                                                  protocol                 = "tcp"
+                                                  from_port                = 443
+                                                  to_port                  = 443
+                                                  type                     = "ingress"
+                                                  source_security_group_id = module.Default_SG.security_group_id
+                }
+                                            ingress_source_security_group_id = {
+                                                  description              = "SSH"
+                                                  protocol                 = "tcp"
+                                                  from_port                = 22
+                                                  to_port                  = 22
+                                                  type                     = "ingress"
+                                                  source_security_group_id = module.Default_SG.security_group_id
+                }
+  }
+
+  eks_managed_node_groups = {
+    Goku = {
+      # Extend node-to-node security group rules
+    
+      use_custom_launch_template = var.use_custom_launch_template
+      disk_size = var.disk_size
+      ebs_optimized = var.ebs_optimized
+      remote_access = {
+                        ec2_ssh_key  = var.key_name
+                      }
+
+      min_size     = var.min_size
+      max_size     = var.max_size
+      desired_size = var.desired_size
+
+      instance_types = var.instance_types
+
+      update_config = {
+                        max_unavailable = var.max_unavailable
+                      }
+    }
+  }
+  
+  tags = {
+    "kubernetes.io/cluster/SSJ2" = "owned"
+  }
+}
+
 ---
 #Latest version as of 06/19/23
 module "eks" {
