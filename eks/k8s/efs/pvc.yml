@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
+  resources:
+    requests:
+      storage: 5Gi
+
+
+---
+#Example pod setup
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efs-app
+spec:
+  containers:
+  - name: app
+    image: centos
+    command: ["/bin/sh"]
+    args: ["-c", "while true; do echo $(date -u) >> /data/out.txt; sleep 2; done"]
+    volumeMounts: #Key part
+    - name: persistent-storage
+      mountPath: /data
+  volumes: #Key part
+  - name: persistent-storage
+    persistentVolumeClaim:
+      claimName: efs-claim
