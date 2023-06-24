@@ -8,7 +8,7 @@ sudo echo "terra ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/terra
 sudo su - terra
 sudo hostnamectl set-hostname terraform
 sudo apt update -y
-curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.25.9/2023-05-11/bin/linux/amd64/kubectl
+sudo curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.27.1/2023-04-19/bin/linux/amd64/kubectl
 sudo chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
