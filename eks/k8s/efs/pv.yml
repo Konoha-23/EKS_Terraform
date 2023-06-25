@@ -1,4 +1,5 @@
 #pv.yaml
+#Ref: https://aws.amazon.com/blogs/storage/persistent-storage-for-kubernetes/
 ---
 apiVersion: v1
 kind: PersistentVolume
