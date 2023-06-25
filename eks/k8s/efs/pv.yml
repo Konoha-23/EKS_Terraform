@@ -14,5 +14,5 @@ spec:
   storageClassName: "efs-sc"
   persistentVolumeReclaimPolicy: Retain
   csi:
-    driver: efs.csi.aws.com #add aws-efs-csi-driver try this as well
-    volumeHandle: fs-0255d01dc40e2392e
+    driver: efs.csi.aws.com #add aws-efs-csi-driver try this as well  
+    volumeHandle: fs-0255d01dc40e2392e #create file system first then use the id here
