@@ -20,7 +20,7 @@ resource "helm_release" "grafana" {
 
 ==
 #ref: https://catalog.us-east-1.prod.workshops.aws/workshops/31676d37-bbe9-4992-9cd1-ceae13c5116c/en-US/aws-managed-oss/amp/ingest-metrics
-resource "helm_release" "prometheus" {
+resource "helm_release" "prometheus" { #aws_managed_prometheus_service
   name       = "prometheus"
   create_namespace = true
   namespace  = "apm"
