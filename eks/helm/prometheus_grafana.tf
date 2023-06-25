@@ -24,7 +24,7 @@ resource "helm_release" "elastic" {
   create_namespace = true
   namespace  = "efk"
   repository = "https://helm.elastic.co"
-  chart      = "elastic"
+  chart      = "elasticsearch"
 }
 
 ---
