@@ -12,5 +12,8 @@ spec:
   storageClassName: "ebs-k83"
   persistentVolumeReclaimPolicy: Retain
   csi:
-    driver: ebs.csi.aws.com
+    driver: ebs.csi.aws.com # aws-ebs-csi-driver
     volumeHandle: vol-0eadcb1365d90d767 #ebs-k82
+
+    #pv.yaml
+#Ref: https://aws.amazon.com/blogs/storage/persistent-storage-for-kubernetes/
