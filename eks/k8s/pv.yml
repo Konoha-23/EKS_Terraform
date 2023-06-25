@@ -16,4 +16,6 @@ spec:
     volumeHandle: vol-0eadcb1365d90d767 #ebs-k82
 
     #pv.yaml
-#Ref: https://aws.amazon.com/blogs/storage/persistent-storage-for-kubernetes/,  https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html
+#Ref: https://aws.amazon.com/blogs/storage/persistent-storage-for-kubernetes/,  
+#Ref: https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html
+#Ref: https://kubernetes.io/docs/concepts/storage/volumes/#csi
