@@ -6,6 +6,10 @@ resource "helm_release" "prometheus" {
   namespace  = "apm"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "prometheus"
+
+  values = [
+    "${file("values.yaml")}"
+  ]
 }
 
 #Ref: https://developer.hashicorp.com/terraform/tutorials/kubernetes/helm-provider
@@ -27,7 +31,11 @@ resource "helm_release" "prometheus" { #aws_managed_prometheus_service
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "amp-prometheus-chart"
 
-set {
+  values = [
+    "${file("values.yaml")}"
+  ]
+
+  set {
     name  = "server.remoteWrite[0].sigv4.region"
     value = "us-esdt-2"
   }
