@@ -1,20 +1,5 @@
 #Configuration for EBS storage class
 #ref: https://kubernetes.io/docs/concepts/storage/volumes/#csi
-Dynamic Provisioning
-----
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: efs-sc
-provisioner: efs.csi.aws.com
-parameters:
-  provisioningMode: efs-ap
-  #volumeHandle: vol-0bf9f9f4a77309dc1 #Change to ID for EBS storage you want to use. Need to test 06/26/23
-  
-
-
-
-Static Provisioning with Persistent Volume configured to inclubde the volumeID of the EBS you setup to use so must set up persistent volume first.
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
