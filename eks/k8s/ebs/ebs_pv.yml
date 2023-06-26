@@ -1,0 +1,18 @@
+Use This for your Persistent Volume claim when doing Static Provisioning!!
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ebs-pv
+spec:
+  capacity:
+    storage: 25Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "ebs-k83"
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: ebs.csi.aws.com
+    volumeHandle: vol-0f2708aa2a7839f23 #Adjust to the EBS volume you've setup in AWS management console or the ID for your Nodes.
