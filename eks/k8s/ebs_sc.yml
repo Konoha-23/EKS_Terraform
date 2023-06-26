@@ -1,5 +1,6 @@
 #Configuration for EBS storage class
 #ref: https://kubernetes.io/docs/concepts/storage/volumes/#csi
+#ref: https://docs.aws.amazon.com/eks/latest/userguide/ebs-sample-app.html
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
