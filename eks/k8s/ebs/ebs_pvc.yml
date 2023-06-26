@@ -1,0 +1,33 @@
+Dynamic Provisioning
+With This Setup, you do not need to have a persistent volume setup as that will be done via the storage class that has been setup.
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-pvc2
+  #namespace:
+spec:
+  resources:
+    requests:
+      storage: 15Gi #Amount of storage being claimed for use by designated POD in deployment
+  storageClassName: ebs-k82 #Name of created storage class
+  volumeMode: Filesystem #Default file system. Will create a file system layer in block storage
+  accessModes: #ReadWriteOnce - RWO(the volume can be mounted as read-write by a single node), ReadOnlyMany - ROX (the volume can be mounted as read-only by many nodes), ReadWriteMany - RWX(the volume can be mounted as read-write by many nodes).
+    - ReadWriteOnce
+
+Static Provisioning. In this setup, the volume claim is dependent on an existing volume/volumes being available in the cluster.
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-pvc2
+  #namespace:
+spec:
+  resources:
+    requests:
+      storage: 15Gi #Amount of storage being claimed for use by designated POD in deployment
+  storageClassName:  #Do not provide a name for static provisioning. Check documentation for how to reserve a specific volume if needed.
+  volumeMode: Filesystem #Default file system. Will create a file system layer in block storage
+  accessModes: #ReadWriteOnce - RWO(the volume can be mounted as read-write by a single node), ReadOnlyMany - ROX (the volume can be mounted as read-only by many nodes), ReadWriteMany - RWX(the volume can be mounted as read-write by many nodes).
+    - ReadWriteOnce
