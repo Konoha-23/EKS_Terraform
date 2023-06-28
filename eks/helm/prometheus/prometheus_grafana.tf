@@ -5,7 +5,7 @@ resource "helm_release" "prometheus" {
   create_namespace = true
   namespace  = "apm"
   repository = "https://prometheus-community.github.io/helm-charts"
-  chart      = "prometheus"
+  chart      = "prometheus-community"
 
   values = [
     "${file("values.yaml")}"
