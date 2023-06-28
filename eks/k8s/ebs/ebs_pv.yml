@@ -1,5 +1,30 @@
 Use This for your Persistent Volume claim when doing Static Provisioning!!
+Deploy Sample Application with EBS Volume AWS ref: https://docs.aws.amazon.com/eks/latest/userguide/ebs-sample-app.html
+Deploy Sample Application with EBS Volume Github: https://github.com/kubernetes-sigs/aws-ebs-csi-driver.git
+Deploy Sample Application with EBS Volume Github Static Provisioning: https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/examples/kubernetes/static-provisioning
 
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-pv
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  csi:
+    driver: ebs.csi.aws.com
+    fsType: ext4
+    volumeHandle: {EBS volume ID}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: topology.ebs.csi.aws.com/zone
+              operator: In
+              values:
+                - {availability zone}
 ---
 apiVersion: v1
 kind: PersistentVolume
