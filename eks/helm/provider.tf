@@ -1,7 +1,5 @@
 Terraform Helm Provider Ref: https://registry.terraform.io/providers/hashicorp/helm/latest/docs
 
----
-
 terraform {
   required_version = "~> 1.0"
   required_providers {
@@ -22,6 +20,8 @@ terraform {
   }
 }
 
+---
+#With This setup, there is no need to have a kubernetes seperate provider block and helm installations can be automatically installed.
 provider "helm" {
   kubernetes {
     host                   = module.eks.cluster_endpoint
