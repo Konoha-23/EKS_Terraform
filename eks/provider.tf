@@ -1,6 +1,5 @@
 ---
-#Latest Version as of 06/19/23
-@Allows you to create an EKS cluster with Helm enabled to install 3rd party packages as add-ons such as Nginx Ingress Controller, Prometheus, etc...
+#Latest Version as of 06/27/23
 Terraform Kubernetes Provider reference: https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs
 terraform {
   required_version = "~> 1.0"
