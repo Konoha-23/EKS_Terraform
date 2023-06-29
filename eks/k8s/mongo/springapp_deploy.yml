@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: springapp
+  template:
+    metadata:
+      labels:
+        app: springapp
+    spec:
+      containers:
+      - name: springapp-container
+        image: princebabs/springapp:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MONGO_DB_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-configmap
+              key: mongo_db_username
+        - name: MONGO_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: mongo_db_password
+        - name: MONGO_DB_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-configmap
+              key: mongo_db_hostname
+        volumeMounts:
+        - name: mongo-config
+          mountPath: /config
+      volumes:
+      - name: mongo-config
+        configMap:
+          name: mongo-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springapp-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: springapp
+  ports:
+  - port: 80
+    targetPort: 8080
