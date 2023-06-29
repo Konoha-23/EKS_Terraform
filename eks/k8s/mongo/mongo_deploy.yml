@@ -1,15 +1,4 @@
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mongodbpvc 
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 16Gi
----
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
