@@ -2,7 +2,7 @@
 #EKS VPC And Subnet Ref: https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
 #Ref for public and private tagging rules tied to alb controller: https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.4/deploy/subnet_discovery/
 #Addons Version Ref: https://docs.aws.amazon.com/eks/latest/userguide/service-accounts.html#boundserviceaccounttoken-validated-add-on-versions
-
+Install EBS Addon: https://dev.to/aws-builders/install-manage-amazon-eks-add-ons-with-terraform-2dea
 ---
 Update as of 06/29/23
 
