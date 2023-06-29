@@ -6,7 +6,7 @@ With This Setup, you do not need to have a persistent volume setup as that will 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ebs-pvc2
+  name: ebs-pvc
   #namespace:
 spec:
   resources:
@@ -22,7 +22,7 @@ Static Provisioning. In this setup, the volume claim is dependent on an existing
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ebs-pvc
+  name: ebs-pvc2
   #namespace:
 spec:
   resources:
