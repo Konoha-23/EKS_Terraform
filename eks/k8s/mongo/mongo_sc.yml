@@ -1,0 +1,10 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: mongo-sc
+  #namespace:
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer #The volumeBindingMode field controls when volume binding and dynamic provisioning should occur. When unset, "Immediate" mode is used by default. The Immediate mode indicates that volume binding and dynamic provisioning occurs once the PersistentVolumeClaim is created. A cluster administrator can address this issue by specifying the WaitForFirstConsumer mode which will delay the binding and provisioning of a PersistentVolume until a Pod using the PersistentVolumeClaim is created.
+parameters:
+  type: gp2
