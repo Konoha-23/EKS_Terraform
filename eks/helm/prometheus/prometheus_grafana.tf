@@ -5,7 +5,7 @@ resource "helm_release" "prometheus" {
   create_namespace = true
   namespace  = "apm"
   repository = "https://prometheus-community.github.io/helm-charts"
-  chart      = "prometheus-community"
+  chart      = "prometheus"
 
   values = [
     "${file("values.yaml")}"
@@ -56,16 +56,6 @@ resource "helm_release" "grafana" {
   namespace  = "visual"
   repository = "https://grafana.github.io/helm-charts"
   chart      = "grafana"
-}
-
-
----
-resource "helm_release" "elastic" {
-  name       = "elastic"
-  create_namespace = true
-  namespace  = "efk"
-  repository = "https://helm.elastic.co"
-  chart      = "elasticsearch"
 }
 
 ---
