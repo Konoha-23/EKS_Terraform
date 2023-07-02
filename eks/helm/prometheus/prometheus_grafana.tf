@@ -22,41 +22,10 @@ resource "helm_release" "grafana" {
   chart      = "grafana"
 }
 
-==
-#ref: https://catalog.us-east-1.prod.workshops.aws/workshops/31676d37-bbe9-4992-9cd1-ceae13c5116c/en-US/aws-managed-oss/amp/ingest-metrics
-resource "helm_release" "prometheus" { #aws_managed_prometheus_service
-  name       = "prometheus"
-  create_namespace = true
-  namespace  = "apm"
-  repository = "https://prometheus-community.github.io/helm-charts"
-  chart      = "amp-prometheus-chart"
+NOTES:
+1. Get your 'admin' user password by running:
 
-  values = [
-    "${file("values.yaml")}"
-  ]
-
-  set {
-    name  = "server.remoteWrite[0].sigv4.region"
-    value = "us-esdt-2"
-  }
-
-  set {
-    name  = "server.remoteWrite[0].url"
-    value = "https://aps-workspaces.${AWS_REGION}.amazonaws.com/workspaces/${WORKSPACE_ID}/api/v1/remote_write" #input workplace I'd after creating workspace I'm AMSP
-  }
-
-}
-
-
-#Ref: https://developer.hashicorp.com/terraform/tutorials/kubernetes/helm-provider
-===
-resource "helm_release" "grafana" {
-  name       = "grafana"
-  create_namespace = true
-  namespace  = "visual"
-  repository = "https://grafana.github.io/helm-charts"
-  chart      = "grafana"
-}
+   kubectl get secret --namespace apm grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 
 ---
 apiVersion: networking.k8s.io/v1
@@ -107,7 +76,7 @@ kubectl create ns apm
       #https://charts.helm.sh/stable - old version deprecated but used during class video
 new chart: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
   
-  kubectl config set-context <context_name> -- namespace=<ns_name>
+  kubectl config set-context <context_name> -- namespace=<ns_name> #Change default namespace
   kubectl config set-context current --namespace=apm 
   kubectl config set-context --current --ns=dev
   kubectl config set-context --current --ns=apm
@@ -123,3 +92,10 @@ helm repo add visual https://grafana.github.io/helm-charts
 helm repo update
 deploy grafana using helm:
 helm install grafana  visual/grafana -n apm
+
+
+
+
+
+
+
