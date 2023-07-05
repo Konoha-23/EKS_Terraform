@@ -1,6 +1,6 @@
 ---
-resource "helm_release" "elastic" {
-  name       = "elastic"
+resource "helm_release" "elasticsearch" {
+  name       = "elasticsearch"
   create_namespace = true
   namespace  = "efk"
   repository = "https://helm.elastic.co"
