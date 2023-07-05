@@ -7,6 +7,22 @@ resource "helm_release" "elastic" {
   chart      = "elasticsearch"
 }
 
+resource "helm_release" "kibana" {
+  name       = "kibana"
+  create_namespace = true
+  namespace  = "efk"
+  repository = "https://helm.elastic.co"
+  chart      = "kibana"
+}
+
+resource "helm_release" "filebeat" {
+  name       = "filebeat"
+  create_namespace = true
+  namespace  = "efk"
+  repository = "https://helm.elastic.co"
+  chart      = "filebeat"
+}
+
 helm install elasticsearch elastic/elasticsearch
    It will deploy elasticsearch in the default namespace 
    It will deploy elasticsearch using default value file 
