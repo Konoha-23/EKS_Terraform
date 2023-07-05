@@ -32,9 +32,11 @@ helm install elasticsearch elastic/elasticsearch \
 NOTES:
 1. Watch all containers come up.
   $ kubectl get pods --namespace=efk -l release=kibana1 -w
-2. Retrieve the elastic user's password.
+#2. Retrieve the elastic username
+ # $ kubectl get secrets --namespace=efk elasticsearch-master-credentials -ojsonpath='{.data.username}' | base64 -d
+3. Retrieve the elastic user's password.
   $ kubectl get secrets --namespace=efk elasticsearch-master-credentials -ojsonpath='{.data.password}' | base64 -d
-3. Retrieve the kibana service account token.
+4. Retrieve the kibana service account token.
   $ kubectl get secrets --namespace=efk kibana1-kibana-es-token -ojsonpath='{.data.token}' | base64 -d
 
 # ingress2.yml
