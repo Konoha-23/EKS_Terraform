@@ -25,7 +25,8 @@ resource "helm_release" "grafana" {
 NOTES:
 1. Get your 'admin' user password by running:
 
-   kubectl get secret --namespace apm grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+    username = admin
+   password = kubectl get secret --namespace apm grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 
 ---
 apiVersion: networking.k8s.io/v1
