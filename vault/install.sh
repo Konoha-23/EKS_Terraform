@@ -11,3 +11,7 @@ sudo gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-ke
 sudo echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt update
 sudo apt install vault
+
+AWS Secrets Ref: https://developer.hashicorp.com/terraform/tutorials/secrets/secrets-vault?utm_offer=ARTICLE_PAGE&utm_medium=WEB_IO&utm_content=DOCS&utm_source=WEBSITE
+
+Helm Kubernetes Ref: https://developer.hashicorp.com/vault/tutorials/kubernetes/kubernetes-amazon-eks
