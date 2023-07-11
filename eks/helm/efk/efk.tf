@@ -1,6 +1,7 @@
 Elasticsearch requires a minimum of 4cpu cores meaning instance types in the xlarge category e.g t2.xlarge, t3.xlarge
 ref: https://opster.com/guides/elasticsearch/capacity-planning/elasticsearch-minimum-requirements/#:~:text=CPU,for%20indexing%20and%20search%20operations.
 Kibana relies on elastic search and doesn't have a cpu requirement however if all pods are not running, it will not function.
+Requires 3 nodes for Helm installation as it deploys a cluster with a Master Node and 2 workers.
 ---
 resource "helm_release" "elasticsearch" {
   name       = "elasticsearch"
