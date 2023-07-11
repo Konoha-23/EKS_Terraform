@@ -1,3 +1,5 @@
+Elasticsearch requires a minimum of 4cpu cores meaning instance types in the xlarge category e.g t2.xlarge, t3.xlarge
+
 ---
 resource "helm_release" "elasticsearch" {
   name       = "elasticsearch"
