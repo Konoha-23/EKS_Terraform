@@ -11,6 +11,8 @@ resource "helm_release" "elasticsearch" {
   chart      = "elasticsearch"
 }
 
+ref: https://artifacthub.io/packages/helm/elastic/elasticsearch
+
 resource "helm_release" "kibana" {
   name       = "kibana"
   create_namespace = true
@@ -19,6 +21,8 @@ resource "helm_release" "kibana" {
   chart      = "kibana"
 }
 
+ref: https://artifacthub.io/packages/helm/elastic/kibana
+
 resource "helm_release" "filebeat" {
   name       = "filebeat"
   create_namespace = true
@@ -26,6 +30,7 @@ resource "helm_release" "filebeat" {
   repository = "https://helm.elastic.co"
   chart      = "filebeat"
 }
+ref: https://artifacthub.io/packages/helm/elastic/filebeat
 
 helm install elasticsearch elastic/elasticsearch
    It will deploy elasticsearch in the default namespace 
@@ -36,10 +41,9 @@ helm install elasticsearch elastic/elasticsearch \
 NOTES:
 1. Watch all containers come up.
   $ kubectl get pods --namespace=efk -l release=kibana1 -w
-#2. Retrieve the elastic username
- # $ kubectl get secrets --namespace=efk elasticsearch-master-credentials -ojsonpath='{.data.username}' | base64 -d
+#2. Username = elastic
 3. Retrieve the elastic user's password.
-  $ kubectl get secrets --namespace=efk elasticsearch-master-credentials -ojsonpath='{.data.password}' | base64 -d
+  $ kubectl get secrets --namespace=efk elasticsearch-master-credentials -ojsonpath='{.data.password}' | base64 -d #substitute namespace with current one in use
 4. Retrieve the kibana service account token.
   $ kubectl get secrets --namespace=efk kibana1-kibana-es-token -ojsonpath='{.data.token}' | base64 -d
 
