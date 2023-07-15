@@ -1,26 +1,33 @@
+Ref: https://medium.com/aws-infrastructure/add-efs-csi-drivers-to-your-eks-kubernetes-cluster-using-terraform-with-helm-provider-bbc21b9ce40b
 
-
-Ref: https://github.com/kubernetes-sigs/aws-efs-csi-driver/blob/master/docs/iam-policy-create.md
-
-resource "helm_release" "efs" {
-  name       = "efs"
+resource "helm_release" "aws_efs_csi_driver" {
+  chart      = "aws-efs-csi-driver"
+  name       = "aws-efs-csi-driver"
   namespace  = "kube-system"
   repository = "https://kubernetes-sigs.github.io/aws-efs-csi-driver/"
-  chart      = "aws-efs-csi-driver"
 
-    set {
+  set {
+    name  = "image.repository"
+    value = "602401143452.dkr.ecr.eu-west-3.amazonaws.com/eks/aws-efs-csi-driver"
+  }
+
+  set {
     name  = "controller.serviceAccount.create"
-    value = "false"
-  } 
+    value = true
+  }
+
+  set {
+    name  = "controller.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = module.attach_efs_csi_role.iam_role_arn
+  }
 
   set {
     name  = "controller.serviceAccount.name"
     value = "efs-csi-controller-sa"
   }
 }
-
-EFS Driver Policy: arn:aws:iam::aws:policy/aws-service-role/AmazonElasticFileSystemServiceRolePolicy
-
+---
+Ref: https://github.com/kubernetes-sigs/aws-efs-csi-driver/blob/master/docs/iam-policy-create.md
 ---
 apiVersion: v1
 kind: ServiceAccount
