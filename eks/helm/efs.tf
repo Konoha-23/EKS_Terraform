@@ -18,7 +18,7 @@ resource "helm_release" "aws_efs_csi_driver" {
 
   set {
     name  = "controller.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    value = module.attach_efs_csi_role.iam_role_arn
+    value = module.efs_csi_irsa_role.iam_role_arn
   }
 
   set {
