@@ -16,3 +16,5 @@ resource "helm_release" "efs" {
     value = "efs-csi-controller-sa"
   }
 }
+
+EFS Driver Policy: arn:aws:iam::aws:policy/aws-service-role/AmazonElasticFileSystemServiceRolePolicy
