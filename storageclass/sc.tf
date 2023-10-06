@@ -20,6 +20,6 @@ resource "kubernetes_storage_class" "efs-sc" {
   parameters = {
     fileSystemId = "fs-0fac5484e6757a520"
     directoryPerms = "777"
-    provisioningMode: "efs-ap"
+    provisioningMode: "efs-ap" #important for volume binding
   }
 }
