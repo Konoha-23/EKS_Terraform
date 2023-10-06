@@ -21,6 +21,8 @@ provider "aws" {
     region = "us-east-2"
 }
 
-provider "kubernetes" {
+provider "helm" {
+  kubernetes {
     config_path = "/home/terra/.kube/config"
   }
+}
