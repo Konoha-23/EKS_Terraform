@@ -8,7 +8,7 @@ Example 1 (EKS VPC):
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "4.0.1"
+  version = "5.1.2"
   
   name = "SSJ_VPC"
   cidr = "10.0.0.0/16"
