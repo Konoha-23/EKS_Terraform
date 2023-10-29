@@ -1,16 +1,32 @@
-resource "kubernetes_service_v1" "nginx-svc" {
-  metadata {
-    name = "nginx-svc"
-  }
-  spec {
-    selector = {
-      app = "nginx"
-    }
-    port {
-      port        = 80
-      target_port = 80
+terraform {
+  required_version = "~> 1.0"
+  required_providers {
+    aws = {
+        source = "hashicorp/aws"
+        version = "~> 4.0"
     }
 
-    type = "LoadBalancer"
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = ">= 2.10"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = ">= 2.4.1"
+    }
+  }
+}
+
+provider "aws" {
+    region = "us-east-2"
+}
+
+provider "kubernetes" {
+    config_path = "/home/terra/.kube/config"
+  }
+
+provider "helm" {
+  kubernetes {
+    config_path = "/home/terra/.kube/config"
   }
 }
