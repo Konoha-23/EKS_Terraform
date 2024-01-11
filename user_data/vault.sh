@@ -8,8 +8,11 @@ If GPG keyring and hashicorp repo are already installed, you can skip those step
 sudo adduser vault
 sudo echo "vault ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/vault
 sudo su - vault
-sudo hostnamectl set-hostname terraform
+sudo hostnamectl set-hostname vault
+sudo timedatectl set-timezone America/Los_Angeles
 sudo chown vault:vault -R /etc/ssh/sshd_config
+sudo sed -i "/^[^#]*PasswordAuthentication[[:space:]]no/c\PasswordAuthentication yes" /etc/ssh/sshd_config
+sudo service sshd restart
 sudo apt update -y && sudo apt install gpg
 sudo wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 sudo gpg --no-default-keyring --keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg --fingerprint
