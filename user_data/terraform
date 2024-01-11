@@ -10,6 +10,7 @@ sudo adduser terra
 sudo echo "terra ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/terra
 sudo su - terra
 sudo hostnamectl set-hostname terraform
+sudo timedatectl set-timezone America/Los_Angeles
 sudo apt update -y
 sudo curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.27.1/2023-04-19/bin/linux/amd64/kubectl
 sudo chmod +x ./kubectl
