@@ -1,4 +1,5 @@
 Install Vault to EKS via Helm Ref: https://developer.hashicorp.com/vault/tutorials/kubernetes/kubernetes-amazon-eks
+Inject Kubernetes Secrets: https://developer.hashicorp.com/vault/tutorials/kubernetes/kubernetes-sidecar
 Follow Process in reference to setup Vault Cluster after installation
 
 resource "helm_release" "vault" {
