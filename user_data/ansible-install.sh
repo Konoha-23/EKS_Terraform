@@ -9,6 +9,7 @@ sudo apt update -y
 sudo apt install awscli -y
 sudo apt-add-repository ppa:ansible/ansible #Needed to get /etc/ansible files e.g ansible.cfg
 sudo apt install ansible -y
+sudo chown ansible:ansible -R /etc/ssh/sshd_config
 sudo sed -i "/^[^#]*PasswordAuthentication[[:space:]]no/c\PasswordAuthentication yes" /etc/ssh/sshd_config
 sudo service sshd restart
 sudo apt update -y
