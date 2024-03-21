@@ -13,5 +13,5 @@ sudo chown ansible:ansible -R /etc/ssh/sshd_config
 sudo sed -i "/^[^#]*PasswordAuthentication[[:space:]]no/c\PasswordAuthentication yes" /etc/ssh/sshd_config
 sudo service sshd restart
 sudo apt update -y
-sudo apt install openjdk-11-jdk -y #Needed for when connecting Ansible to Jenkins
+sudo apt install openjdk-17-jdk -y #Needed for when connecting Ansible to Jenkins
 
